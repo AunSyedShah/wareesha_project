@@ -1,0 +1,62 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "Start Both Frontend & Backend (Watch Mode)",
+            "command": "bun",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Start Backend Only (Watch Mode)",
+            "command": "bun",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/backend"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Start Frontend Only (Watch Mode)",
+            "command": "bun",
+            "args": [
+                "run",
+                "dev"
+            ],
+            "group": "build",
+            "isBackground": true,
+            "problemMatcher": [],
+            "options": {
+                "cwd": "${workspaceFolder}/frontend"
+            }
+        },
+        {
+            "type": "shell",
+            "label": "Install Dependencies (All)",
+            "command": "bun",
+            "args": [
+                "run",
+                "install:all"
+            ],
+            "group": "build",
+            "isBackground": false,
+            "problemMatcher": []
+        }
+    ]
+}

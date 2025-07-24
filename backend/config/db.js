@@ -22,10 +22,15 @@ const ConnectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log("Connected to DB.....");
+    console.log("✅ Connected to MongoDB successfully");
   } catch (err) {
-    console.log("Connection Failed.....");
-    console.error(err);
+    console.log("❌ MongoDB Connection Failed:");
+    console.error(err.message);
+    console.log("💡 Make sure MongoDB is running or use MongoDB Atlas");
+    console.log("🔧 Current connection string:", process.env.DBURI);
+    
+    // Don't exit the process, let the app run without DB for development
+    console.log("⚠️  Continuing without database connection...");
   }
 };
 

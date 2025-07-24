@@ -1,0 +1,24 @@
+{
+  "name": "wareesha-project",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "concurrently \"bun run dev:backend\" \"bun run dev:frontend\"",
+    "dev:frontend": "cd frontend && bun run dev",
+    "dev:backend": "cd backend && bun run dev",
+    "start": "bun run --parallel start:frontend start:backend",
+    "start:frontend": "cd frontend && bun run dev",
+    "start:backend": "cd backend && bun run start",
+    "build": "bun run build:frontend && bun run build:backend",
+    "build:frontend": "cd frontend && bun run build",
+    "build:backend": "cd backend && bun run build",
+    "install:all": "bun install && cd frontend && bun install && cd ../backend && bun install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,18 +1,22 @@
-import React from 'react';
 import { Calendar, Building2, Users, TrendingUp, DollarSign, Clock } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
 
 export function AdminDashboard() {
-  const { expos, exhibitors, schedules, registrations } = useData();
+  const { expos, exhibitors } = useData();
 
-  const totalRevenue = expos.reduce((sum, expo) => {
+  // Safely handle potentially undefined arrays
+  const safeExpos = expos || [];
+  const safeExhibitors = exhibitors || [];
+
+  const totalRevenue = safeExpos.reduce((sum, expo) => {
+    if (!expo.floorPlan?.booths) return sum;
     const occupiedBooths = expo.floorPlan.booths.filter(booth => booth.status === 'occupied');
-    return sum + occupiedBooths.reduce((boothSum, booth) => boothSum + booth.price, 0);
+    return sum + occupiedBooths.reduce((boothSum, booth) => boothSum + (booth.price || 0), 0);
   }, 0);
 
-  const upcomingExpos = expos.filter(expo => expo.status === 'upcoming').length;
-  const totalExhibitors = exhibitors.length;
-  const totalAttendees = registrations.length;
+  const upcomingExpos = safeExpos.filter(expo => expo.status === 'upcoming').length;
+  const totalExhibitors = safeExhibitors.length;
+  const totalAttendees = 0; // TODO: Implement attendees/registrations in DataContext
 
   const stats = [
     {
@@ -82,7 +86,7 @@ export function AdminDashboard() {
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Expos</h3>
           <div className="space-y-4">
-            {expos.slice(0, 3).map((expo) => (
+            {safeExpos.slice(0, 3).map((expo) => (
               <div key={expo.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                 <div className="w-10 h-10 bg-sky-600 rounded-lg flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-white" />
@@ -105,13 +109,16 @@ export function AdminDashboard() {
                 </div>
               </div>
             ))}
+            {safeExpos.length === 0 && (
+              <p className="text-gray-500 text-center py-4">No expos found</p>
+            )}
           </div>
         </div>
 
         <div className="bg-white rounded-xl border border-gray-200 p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Exhibitor Applications</h3>
           <div className="space-y-4">
-            {exhibitors.slice(0, 3).map((exhibitor) => (
+            {safeExhibitors.slice(0, 3).map((exhibitor) => (
               <div key={exhibitor.id} className="flex items-center gap-4 p-4 bg-gray-50 rounded-lg">
                 <div className="w-10 h-10 bg-violet-600 rounded-lg flex items-center justify-center">
                   <Building2 className="w-5 h-5 text-white" />
@@ -131,6 +138,9 @@ export function AdminDashboard() {
                 </div>
               </div>
             ))}
+            {safeExhibitors.length === 0 && (
+              <p className="text-gray-500 text-center py-4">No exhibitor applications found</p>
+            )}
           </div>
         </div>
       </div>

@@ -44,7 +44,7 @@ export function RegisterForm({ onToggleMode }: RegisterFormProps) {
     setLoading(true);
 
     try {
-      const success = await register({
+      const result = await register({
         email: formData.email,
         password: formData.password,
         name: formData.name,
@@ -52,8 +52,8 @@ export function RegisterForm({ onToggleMode }: RegisterFormProps) {
         company: formData.company || undefined
       });
 
-      if (!success) {
-        setError('Email already exists');
+      if (!result.success) {
+        setError(result.error || 'Registration failed');
       }
     } catch (err) {
       setError('An error occurred. Please try again.');
